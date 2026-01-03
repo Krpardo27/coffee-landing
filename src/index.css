@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: #1A1A1A;
+  }
+}
+
+
+@layer utilities {
+
+  .nav-hover-btn {
+    @apply relative text-xs uppercase after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+  }
+
+  .floating-nav {
+    @apply rounded-lg border;
+  }
+
+  .absolute-center {
+    @apply absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%];
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .mask-clip-path {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .about-image {
+    @apply absolute left-1/2 top-20 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-3xl lg:w-[40vw];
+  }
+
+  .animated-title {
+    @apply flex flex-col gap-1 text-7xl uppercase leading-[.8] text-white px-32 lg:px-20 lg:text-[6rem];
+  }
+
+  .animated-word {
+    @apply opacity-0;
+    transform: translate3d(10px, 51px, -60px) rotateY(60deg) rotateX(-40deg);
+    transform-origin: 50% 50% -80px !important;
+    will-change: opacity, transform;
+  }
+
+  .gallery-img-container {
+    @apply size-full overflow-hidden bg-violet-300;
+  }
+
+  .gallery-img {
+    @apply size-full bg-cover;
+  }
+
+  .gallery-img-4 {
+    @apply size-80 lg:h-96 lg:w-[25rem] rounded-lg;
+  }
+
+ .story-img-container {
+    @apply relative w-full h-[70vh] sm:h-[80vh] lg:h-dvh;
+    filter: url("#flt_tag");
+  }
+
+  .story-img-mask {
+    @apply absolute inset-0 overflow-hidden lg:left-[10%] lg:top-[-5%] lg:w-[85%] lg:h-[90%];
+    clip-path: polygon(4% 0, 83% 21%, 100% 73%, 0% 100%);
+  }
+
+  .story-img-content {
+    @apply absolute inset-0 w-full h-full;
+  }
+
+  .sword-man-clip-path {
+    clip-path: polygon(16% 0, 89% 15%, 75% 100%, 0 97%);
+  }
+
+  .contact-clip-path-1 {
+    clip-path: polygon(25% 0%, 74% 0, 69% 64%, 34% 73%);
+  }
+
+  .contact-clip-path-2 {
+    clip-path: polygon(29% 15%, 85% 30%, 50% 100%, 10% 64%);
+  }
+}
+
+.indicator-line {
+  @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
+}
+
+.indicator-line.active {
+  animation: indicator-line 0.5s ease infinite;
+  animation-delay: calc(var(--animation-order) * 0.1s);
+}
+
+@keyframes indicator-line {
+  0% {
+    height: 4px;
+    transform: translateY(-0px);
+  }
+
+  50% {
+    height: 16px;
+    transform: translateY(-4px);
+  }
+
+  100% {
+    height: 4px;
+    transform: translateY(-0px);
+  }
+}
