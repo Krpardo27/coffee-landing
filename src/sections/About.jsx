@@ -3,12 +3,15 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 import AnimatedTitle from "../components/AnimatedTitle";
+import { useRevealOnScroll } from "../hooks/useRevealOnScroll";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const clipRef = useRef(null);
   const imageRef = useRef(null);
+
+  const ref = useRef(null);
 
   useGSAP(() => {
     const image = imageRef.current;
@@ -34,6 +37,7 @@ const About = () => {
           scrub: 0.6,
           pin: true,
           anticipatePin: 1,
+          toggleActions: "play none none reverse",
         },
       })
       .to(image, {
@@ -43,19 +47,33 @@ const About = () => {
       });
   }, []);
 
+  useRevealOnScroll(ref);
+
   return (
     <section
       id="nosotros"
       className="relative min-h-screen w-full overflow-hidden bg-black"
     >
-      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 pt-24 text-center">
+      <div
+        ref={ref}
+        className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 pt-24 text-center"
+      >
         <h2 className="tracking-widest text-white/70 lg:text-[50px] uppercase">
           Sobre Nosotros
         </h2>
         <AnimatedTitle
-          title={["SOBRE NOSOTROS"]}
-          containerClass="mix-blend-difference"
+          lines={["OUR STORY", "CONTINUES"]}
+          effect="flip"
+          className="
+    text-transparent
+    bg-clip-text
+    bg-gradient-to-r
+    from-neutral-100
+    via-neutral-300
+    to-neutral-500
+  "
         />
+
         <p className="max-w-4xl text-xl leading-relaxed text-cream">
           Creemos en el café bien hecho y en la comida que se disfruta sin
           apuro. Trabajamos con granos de especialidad y productos
@@ -73,7 +91,7 @@ const About = () => {
       >
         <div ref={imageRef} className="mask-clip-path about-image mx-auto">
           <img
-            src="images/gallery-4.jpg"
+            src="images/hero/hero-3.jpg"
             alt="Background"
             className="h-full w-full object-cover"
           />

@@ -1,82 +1,73 @@
 import { useRef } from "react";
 import AnimatedTitle from "./AnimatedTitle";
-import gsap from "gsap";
-import Button from "./Button";
+import { useRevealOnScroll } from "../hooks/useRevealOnScroll";
 
 const Story = () => {
-  const frameRef = useRef(null);
+  const sectionRef = useRef(null);
 
-  const handleMouseLeave = () => {
-    const element = frameRef.current;
-
-    gsap.to(element, {
-      duration: 0.3,
-      rotateX: 0,
-      rotateY: 0,
-      ease: "power1.inOut",
-    });
-  };
-
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    const element = frameRef.current;
-
-    if (!element) return;
-
-    const rect = element.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-
-    gsap.to(element, {
-      duration: 0.3,
-      rotateX,
-      rotateY,
-      transformPerspective: 500,
-      ease: "power1.inOut",
-    });
-  };
+  useRevealOnScroll(sectionRef);
 
   return (
     <section
       id="story"
-      className="relative w-full px-6 lg:px-10 flex items-center justify-center py-20 lg:pt-32 overflow-hidden"
+      className="
+        relative
+        min-h-dvh
+        w-full
+        px-6
+        lg:px-10
+        flex
+        items-center
+        justify-center
+        lg:py-32"
     >
-      <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-10 lg:pt-10">
-        {/* Subtitle */}
-        <p className="text-xs sm:text-sm uppercase tracking-widest text-white/70 lg:text-[50px]">
-          THE MULTIVERSE IP WORLDS
-        </p>
-
-        {/* Title */}
-        <AnimatedTitle
-          title={["OUR STORY", "CONTINUES"]}
-          sectionId="#story"
-          containerClass="mix-blend-difference relative z-20 text-center"
-        />
-
-        {/* Imagen */}
-        {/* <div className="story-img-container">
-          <div className="story-img-mask">
-            <div className="story-img-content">
-              <img
-                ref={frameRef}
-                onMouseLeave={handleMouseLeave}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseLeave}
-                src="/images/gallery-3.jpg"
-                alt="Café"
-                className="size-full object-cover"
-              />
-            </div>
+      <div
+        ref={sectionRef}
+        className="relative
+          flex
+          w-full
+          max-w-8xl
+          flex-col
+          items-center
+          justify-center
+          rounded-lg
+          bg-black
+          lg:py-52
+          p-12
+          overflow-hidden"
+      >
+        <div className="flex flex-col size-full p-4 justify-center items-center space-y-6">
+          <p className="font-general text-xs sm:text-sm uppercase tracking-[0.35em] text-white/60">
+            Sigamos conversando
+          </p>
+          <h2 className="tracking-widest text-white/70 lg:text-[50px] uppercase">
+            Nuestra Especialidad
+          </h2>
+          <AnimatedTitle
+            lines={["CAFÉ FINAMENTE", "SELECCIONADO"]}
+            effect="flip"
+            className="
+    text-transparent
+    bg-clip-text
+    bg-gradient-to-r
+    from-neutral-100
+    via-neutral-300
+    to-neutral-500
+    text-center
+  "
+          />
+          <div className="space-y-5">
+            <p className="max-w-4xl text-xl leading-relaxed text-cream">
+              Creemos en el café bien hecho y en la comida que se disfruta sin
+              apuro. Trabajamos con granos de especialidad y productos
+              seleccionados, cuidando cada detalle del proceso: desde el origen
+              hasta la mesa. Nuestro espacio combina café, cocina y ambiente
+              para crear un lugar donde quedarse, compartir y volver. Todo lo
+              que servimos tiene una intención clara: calidad real, sabor
+              honesto y una experiencia que se siente cercana.
+            </p>
           </div>
-        </div> */}
-
-        
+        </div>
       </div>
     </section>
   );

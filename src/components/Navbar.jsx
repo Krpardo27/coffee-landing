@@ -60,8 +60,8 @@ const Navbar = () => {
       <div
         ref={navRef}
         className={`
-          fixed top-4 inset-x-6 z-50
-          h-16
+          fixed top-10 inset-x-6 z-50
+          h-20 max-w-7xl mx-auto rounded-xl
           transition-colors duration-300
           ${currentScrollY > 0 ? "bg-black/75 backdrop-blur-md" : "bg-transparent"}
         `}
@@ -70,9 +70,9 @@ const Navbar = () => {
           {/* LOGO + CARTA */}
           <div className="flex items-center gap-6">
             <img
-              src="/images/logo.svg"
+              src="logo.png"
               alt="Cafetería"
-              className="h-8 w-auto object-contain"
+              className="object-cover w-26 h-26"
             />
 
             <Button

@@ -1,56 +1,84 @@
 import { useLayoutEffect, useRef } from "react";
-import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import clsx from "clsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AnimatedTitle = ({ title = [], containerClass }) => {
+const effects = {
+  flip: {
+    from: {
+      opacity: 0,
+      y: 40,
+      rotateX: 90,
+      transformOrigin: "50% 50% -20",
+    },
+    to: {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      ease: "power3.out",
+    },
+  },
+  slide: {
+    from: { opacity: 0, y: 60 },
+    to: { opacity: 1, y: 0, ease: "power3.out" },
+  },
+};
+
+const AnimatedTitle = ({
+  lines = [],
+  effect = "flip",
+  align = "center",
+  triggerStart = "top 85%",
+  className,
+}) => {
   const containerRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 85%",
-            end: "center 60%",
-            toggleActions: "play none none reverse",
-          },
-        })
-        .to(
-          gsap.utils.toArray(".animated-word", containerRef.current),
-          {
-            opacity: 1,
-            transform:
-              "translate3d(0,0,0) rotateY(0deg) rotateX(0deg)",
-            ease: "power2.inOut",
-            stagger: 0.03,
-          }
-        );
+      const words = gsap.utils.toArray("[data-word]", containerRef.current);
+      const { from, to } = effects[effect];
+
+      gsap.set(words, from);
+
+      gsap.to(words, {
+        ...to,
+        stagger: {
+          each: 0.04,
+          from: "start",
+        },
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: triggerStart,
+          toggleActions: "play none none reverse",
+        },
+      });
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [effect, triggerStart]);
 
   return (
     <div
       ref={containerRef}
       className={clsx(
-        "animated-title flex flex-col gap-2 overflow-hidden",
-        containerClass
+        "animated-title overflow-hidden",
+        align === "center" && "text-center",
+        align === "left" && "text-left",
+        className
       )}
     >
-      {title.map((line, index) => (
+      {lines.map((line, i) => (
         <div
-          key={index}
-          className="flex flex-wrap justify-center gap-2 md:gap-3"
+          key={i}
+          className="flex flex-wrap gap-x-3 gap-y-1"
         >
-          {line.split(" ").map((word, idx) => (
+          {line.split(" ").map((word, j) => (
             <span
-              key={idx}
-              className="animated-word whitespace-nowrap"
+              key={j}
+              data-word
+              className="inline-block font-display text-4xl md:text-6xl font-semibold tracking-tight"
             >
               {word}
             </span>

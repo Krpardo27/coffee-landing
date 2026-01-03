@@ -1,32 +1,58 @@
-import React from "react";
+import { useRef } from "react";
 import AnimatedTitle from "./AnimatedTitle";
 import Button from "./Button";
+import { useRevealOnScroll } from "../hooks/useRevealOnScroll.js";
 
 const ImageClipBox = ({ src, clipClass }) => {
   return (
     <div className={clipClass}>
-      <img src={src} />
+      <img src={src} alt="" className="block max-w-none" />
     </div>
   );
 };
 
 const Contact = () => {
+  const textRef = useRef(null);
+
+  // 👉 SOLO el texto se revela
+  useRevealOnScroll(textRef);
+
   return (
-    <div
+    <section
       id="contacto"
-      className="relative min-h-dvh w-full px-6 lg:px-10 flex items-center justify-center"
+      className="
+        relative
+        min-h-dvh
+        w-full
+        px-6
+        lg:px-10
+        flex
+        items-center
+        justify-center
+        lg:py-32"
     >
-      <div className="relative flex w-full max-w-8xl flex-col py-52 items-center justify-center rounded-lg bg-black overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center opacity-90">
+      <div
+        className="
+          relative
+          flex
+          w-full
+          max-w-8xl
+          flex-col
+          items-center
+          justify-center
+          rounded-lg
+          bg-black
+          lg:py-52
+          p-24
+          overflow-hidden"
+      >
+        {/* IMÁGENES LATERALES (SIN ANIMACIÓN) */}
+        <div className="hidden lg:flex pointer-events-none absolute inset-y-0 left-0 items-center opacity-90">
           <div className="relative ml-10 flex flex-col gap-6">
             <ImageClipBox
               src="/images/gallery-4.jpg"
               clipClass="contact-clip-path-1 w-max object-cover lg:-translate-x-120 opacity-90"
             />
-            {/* <ImageClipBox
-              src="/images/gallery-2.jpg"
-              clipClass="sword-man-clip-path size-full lg:translate-y-40 object-cover"
-            /> */}
           </div>
         </div>
 
@@ -36,24 +62,45 @@ const Contact = () => {
               src="/images/cafe.webp"
               clipClass="contact-clip-path-2 size-full object-cover lg:translate-x-80"
             />
-            {/* <ImageClipBox
-              src="/images/gallery-4.jpg"
-              clipClass="sword-man-clip-path w-96 h-[28rem] object-cover"
-            /> */}
           </div>
         </div>
 
-        {/* CONTENIDO CENTRAL */}
-        <div className="relative z-10 flex flex-col items-center text-center gap-8">
-          <p className="font-general text-xl uppercase tracking-widest text-white/70">
-            Join Zentry
+        {/* CONTENEDOR DE TEXTO (ANIMADO) */}
+        <div
+          ref={textRef}
+          className="
+            flex flex-col size-full p-4 justify-center items-center space-y-6"
+        >
+          <p className="font-general text-xs sm:text-sm uppercase tracking-[0.35em] text-white/60">
+            Sigamos conversando
           </p>
+          <h2 className="tracking-widest text-white/70 lg:text-[50px] uppercase">Conoce Sobre Nosotros</h2>
 
           <AnimatedTitle
-            title={["OUR STORY", "CONTINUES"]}
-            sectionId="#contact"
-            containerClass="mix-blend-difference"
+            lines={["NUESTRA HISTORIA", "CONTINÚA"]}
+            effect="flip"
+            className="
+              text-transparent
+              bg-clip-text
+              bg-gradient-to-r
+              from-neutral-100
+              via-neutral-300
+              to-neutral-500
+            "
           />
+
+          <div className="space-y-5">
+            <p className="text-base sm:text-lg text-white/80 leading-relaxed">
+              Cada café que preparamos es una invitación a detenerse, observar y
+              disfrutar. Creemos en procesos honestos, materias primas de
+              calidad y en el valor de hacer las cosas bien, sin atajos.
+            </p>
+
+            <p className="text-sm sm:text-base text-white/60 leading-relaxed">
+              Si compartes nuestra visión del café como experiencia, ritual y
+              expresión de origen, estaremos encantados de escucharte.
+            </p>
+          </div>
 
           <Button
             title={["Contáctanos"]}
@@ -61,7 +108,7 @@ const Contact = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

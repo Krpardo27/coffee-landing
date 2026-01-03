@@ -14,8 +14,8 @@ const App = () => {
       <main className="relative min-h-screen w-screen">
         <Navbar />
         <Hero />
-        <Gallery />
         <About />
+        <Gallery />
         <Story />
         <Location />
         <Contact />

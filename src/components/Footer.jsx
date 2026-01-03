@@ -8,7 +8,7 @@ const links = [
 
 const Footer = () => {
   return (
-    <footer className="w-screen py-12 text-black">
+    <footer className="w-screen py-12 text-cream bg-black">
       <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 lg:flex-row">
         <p className="text-center text-md font-light lg:text-left">
           &copy; {new Date().getFullYear()} Café Cafecito uwu. All rights
@@ -21,7 +21,7 @@ const Footer = () => {
               key={link.name}
               href={link.href}
               target="_blank"
-              className="text-black transition-colors duration-500 ease-in-out hover:text-white"
+              className="text-cream transition-colors duration-500 ease-in-out hover:text-white"
               rel="noopener noreferrer"
             >
               {link.name}
