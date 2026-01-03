@@ -19,7 +19,7 @@ const Story = () => {
         flex
         items-center
         justify-center
-        lg:py-32"
+        lg:py-12"
     >
       <div
         ref={sectionRef}
@@ -33,7 +33,7 @@ const Story = () => {
           rounded-lg
           bg-black
           lg:py-52
-          p-12
+          p-24
           overflow-hidden"
       >
         <div className="flex flex-col size-full p-4 justify-center items-center space-y-6">

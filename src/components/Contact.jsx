@@ -29,7 +29,7 @@ const Contact = () => {
         flex
         items-center
         justify-center
-        lg:py-32"
+        lg:py-10"
     >
       <div
         className="
