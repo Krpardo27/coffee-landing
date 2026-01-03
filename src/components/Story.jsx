@@ -33,7 +33,8 @@ const Story = () => {
           rounded-lg
           bg-black
           lg:py-52
-          p-24
+          py-24
+          px-12
           overflow-hidden"
       >
         <div className="flex flex-col size-full p-4 justify-center items-center space-y-6">

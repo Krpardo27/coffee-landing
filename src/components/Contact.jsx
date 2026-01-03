@@ -43,7 +43,8 @@ const Contact = () => {
           rounded-lg
           bg-black
           lg:py-52
-          p-24
+          py-24
+          px-12
           overflow-hidden"
       >
         {/* IMÁGENES LATERALES (SIN ANIMACIÓN) */}
