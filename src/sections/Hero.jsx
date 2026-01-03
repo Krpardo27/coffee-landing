@@ -7,8 +7,10 @@ const Hero = () => {
       <img
         src="images/hero-coffee.jpg"
         alt="Café artesanal"
-        className="absolute inset-0 size-full object-cover brightness-50"
+        className="absolute inset-0 size-full object-cover"
       />
+
+       <div className="absolute inset-0 bg-black/50" />
 
       {/* Contenido */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 flex min-h-dvh items-center">

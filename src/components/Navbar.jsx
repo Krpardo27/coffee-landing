@@ -2,21 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { HiChevronDown as ChevronDownIcon } from "react-icons/hi";
 import { useWindowScroll } from "react-use";
+import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import Button from "./Button";
 import MenuModal from "./MenuModal";
+import { useAmbientAudio } from "../hooks/useAmbientAudio";
 
 const navItems = ["Nosotros", "Café", "Contacto"];
 
 const Navbar = () => {
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const { audioRef, isPlaying, levels, toggle } = useAmbientAudio({
+    maxVolume: 0.35,
+  });
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navRef = useRef(null);
-  const audioRef = useRef(null);
-
   const lastScrollY = useRef(0);
   const isNavVisible = useRef(true);
-
   const { y: currentScrollY } = useWindowScroll();
 
   useEffect(() => {
@@ -35,11 +37,9 @@ const Navbar = () => {
       return;
     }
 
-    let shouldBeVisible = true;
-
-    if (currentScrollY > lastScrollY.current && currentScrollY > 0) {
-      shouldBeVisible = false;
-    }
+    const shouldBeVisible = !(
+      currentScrollY > lastScrollY.current && currentScrollY > 0
+    );
 
     if (shouldBeVisible !== isNavVisible.current) {
       isNavVisible.current = shouldBeVisible;
@@ -55,37 +55,19 @@ const Navbar = () => {
     lastScrollY.current = currentScrollY;
   }, [currentScrollY, menuOpen]);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isAudioPlaying) {
-      audio.play().catch(() => {});
-    } else {
-      audio.pause();
-    }
-  }, [isAudioPlaying]);
-
-  const toggleAudio = () => {
-    setIsAudioPlaying((prev) => !prev);
-  };
   return (
     <>
       <div
         ref={navRef}
         className={`
-        fixed top-4 inset-x-6 z-50
-        h-16
-        transition-colors duration-300
-        ${
-          currentScrollY > 0
-            ? "floating-nav backdrop-blur-md bg-red-600"
-            : "bg-transparent"
-        }
-      `}
+          fixed top-4 inset-x-6 z-50
+          h-16
+          transition-colors duration-300
+          ${currentScrollY > 0 ? "bg-black/75 backdrop-blur-md" : "bg-transparent"}
+        `}
       >
         <nav className="flex h-full items-center justify-between px-6">
-          {/* LOGO */}
+          {/* LOGO + CARTA */}
           <div className="flex items-center gap-6">
             <img
               src="/images/logo.svg"
@@ -93,7 +75,6 @@ const Navbar = () => {
               className="h-8 w-auto object-contain"
             />
 
-            {/* Botón carta (desktop) */}
             <Button
               title="Carta"
               rightIcon={<ChevronDownIcon />}
@@ -101,6 +82,7 @@ const Navbar = () => {
             />
           </div>
 
+          {/* LINKS + AUDIO */}
           <div className="flex items-center gap-8">
             {/* Links desktop */}
             <div className="hidden lg:flex items-center gap-6">
@@ -109,43 +91,64 @@ const Navbar = () => {
                   key={item}
                   href={`#${item.toLowerCase()}`}
                   className="
-                  nav-hover-btn
-                  text-sm uppercase tracking-widest
-                  text-coffee-100 hover:text-white
-                "
+                    group relative px-3 py-1 rounded-md
+                    text-sm uppercase tracking-widest
+                    text-white/90 hover:text-white
+                    transition-all duration-300
+                  "
                 >
                   {item}
+
+                  <span
+                    className="
+                      pointer-events-none
+                      absolute left-1/2 -bottom-1
+                      h-[1.5px] w-0
+                      bg-white/90
+                      transition-all duration-300 ease-out
+                      group-hover:left-0
+                      group-hover:w-full
+                    "
+                  />
                 </a>
               ))}
             </div>
 
             {/* Audio toggle */}
             <button
-              onClick={toggleAudio}
+              onClick={toggle}
               aria-label="Ambiente sonoro"
-              className="flex items-center gap-1"
+              className="
+                flex items-center gap-2
+                px-3 py-2 rounded-md
+                bg-black/20 backdrop-blur-sm
+                text-white/90 hover:text-white
+                transition
+              "
             >
-              <audio
-                ref={audioRef}
-                src="/audio/loop.mp3"
-                loop
-                className="hidden"
-              />
+              <audio ref={audioRef} src="/audio/loop.mp3" loop preload="none" />
 
-              {[1, 2, 3, 4].map((bar) => (
-                <span
-                  key={bar}
-                  className={`
-                  indicator-line
-                  ${isAudioPlaying ? "active" : ""}
-                `}
-                  style={{ animationDelay: `${bar * 0.1}s` }}
-                />
-              ))}
+              <span className="text-lg">
+                {isPlaying ? <FaVolumeUp /> : <FaVolumeMute />}
+              </span>
+
+              <div className="flex items-end gap-[3px] h-5">
+                {levels.map((lvl, i) => (
+                  <span
+                    key={i}
+                    className="w-[3px] rounded-full bg-white transition-all"
+                    style={{
+                      height: `${6 + lvl * 14}px`,
+                      opacity: isPlaying ? 1 : 0.3,
+                    }}
+                  />
+                ))}
+              </div>
             </button>
           </div>
         </nav>
       </div>
+
       <MenuModal open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   );
